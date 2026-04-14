@@ -9,6 +9,21 @@ Dashboard web para cargar y visualizar archivos Excel con autenticación de usua
 
 ---
 
+## Entorno en la nube (Gitpod / Ona)
+
+Los servicios arrancan automáticamente al abrir el entorno. Si las URLs muestran "service unavailable", significa que los servicios están detenidos. Para reiniciarlos:
+
+```bash
+gitpod automations service start django
+gitpod automations service start vite
+```
+
+Las URLs públicas de acceso son:
+- **Frontend**: se imprime en los logs del servicio `vite` al arrancar
+- **API**: se imprime en los logs del servicio `django` al arrancar
+
+---
+
 ## Setup rápido (desarrollo local)
 
 ### 1. Backend (Django)

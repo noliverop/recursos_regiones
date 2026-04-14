@@ -28,6 +28,10 @@ services:
     commands:
       start: |
         cd backend
+        until [ -f .venv/bin/python ]; do
+          echo "Waiting for backend venv..."
+          sleep 2
+        done
         .venv/bin/python manage.py runserver 0.0.0.0:8000
       ready: curl -sf http://localhost:8000/api/auth/csrf/
 
@@ -39,5 +43,9 @@ services:
     commands:
       start: |
         cd frontend
+        until [ -d node_modules ]; do
+          echo "Waiting for frontend node_modules..."
+          sleep 2
+        done
         npm run dev -- --host
       ready: curl -sf http://localhost:5173

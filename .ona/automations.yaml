@@ -1,0 +1,39 @@
+tasks:
+  installBackend:
+    name: Install backend dependencies
+    description: Install Python packages into a venv and apply Django migrations.
+    command: |
+      cd backend
+      python3 -m venv .venv
+      .venv/bin/pip install -r requirements.txt
+      .venv/bin/python manage.py migrate
+    triggeredBy:
+      - postDevcontainerStart
+
+  installFrontend:
+    name: Install frontend dependencies
+    description: Install Node packages for the Vite/React frontend.
+    command: |
+      cd frontend
+      npm install
+    triggeredBy:
+      - postDevcontainerStart
+
+services:
+  django:
+    name: Django API
+    description: Django REST Framework development server on port 8000.
+    commands:
+      start: |
+        cd backend
+        .venv/bin/python manage.py runserver 0.0.0.0:8000
+      ready: curl -sf http://localhost:8000/api/auth/csrf/
+
+  vite:
+    name: Vite Frontend
+    description: Vite development server for the React frontend on port 5173.
+    commands:
+      start: |
+        cd frontend
+        npm run dev -- --host
+      ready: curl -sf http://localhost:5173

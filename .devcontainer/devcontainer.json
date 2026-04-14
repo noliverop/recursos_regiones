@@ -1,0 +1,19 @@
+{
+  "name": "Recursos Regiones",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/python": {},
+    "ghcr.io/devcontainers/features/node": {}
+  },
+  "forwardPorts": [8000, 5173],
+  "portsAttributes": {
+    "8000": {
+      "label": "Django API",
+      "onAutoForward": "notify"
+    },
+    "5173": {
+      "label": "Vite Frontend",
+      "onAutoForward": "openPreview"
+    }
+  }
+}

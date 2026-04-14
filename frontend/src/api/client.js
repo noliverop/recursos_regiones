@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API_BASE = 'http://localhost:8000/api'
+// Requests go through Vite's proxy (/api → backend), keeping cookies same-origin.
+const API_BASE = '/api'
 
 function getCsrfToken() {
   const match = document.cookie

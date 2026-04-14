@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -6,7 +7,7 @@ SECRET_KEY = 'django-insecure-change-this-key-in-production-xxxxxxxxxxxxxxxxxxxx
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +24,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'config.middleware.TrustGitpodOriginMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,19 +88,22 @@ REST_FRAMEWORK = {
 }
 
 # CORS — allow React dev server
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-]
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-# CSRF
-CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_HTTPONLY = False  # Frontend must read the cookie via JS
+# All API requests are proxied through Vite, so they arrive from the same
+# origin as the frontend. Trusted origins only need to cover the Vite port
+# (local) and the cloud preview domain.
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',
+    'http://localhost:8000',
     'http://127.0.0.1:5173',
+    'http://127.0.0.1:8000',
 ]
+
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = False  # Vite proxy is HTTP internally
+CSRF_COOKIE_HTTPONLY = False  # Frontend must read the cookie via JS
 
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_HTTPONLY = True

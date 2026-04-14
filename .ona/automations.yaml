@@ -33,7 +33,14 @@ services:
           sleep 2
         done
         .venv/bin/python manage.py runserver 0.0.0.0:8000
-      ready: curl -sf http://localhost:8000/api/auth/csrf/
+      ready: |
+        curl -sf http://localhost:8000/api/auth/csrf/
+        API_URL=$(gitpod environment port open 8000 --name django 2>/dev/null)
+        echo ""
+        echo "=========================================="
+        echo "  Django API disponible en:"
+        echo "  ${API_URL:-http://localhost:8000}"
+        echo "=========================================="
 
   vite:
     name: Vite Frontend
@@ -48,4 +55,11 @@ services:
           sleep 2
         done
         npm run dev -- --host
-      ready: curl -sf http://localhost:5173
+      ready: |
+        curl -sf http://localhost:5173
+        FRONTEND_URL=$(gitpod environment port open 5173 --name vite 2>/dev/null)
+        echo ""
+        echo "=========================================="
+        echo "  Frontend disponible en:"
+        echo "  ${FRONTEND_URL:-http://localhost:5173}"
+        echo "=========================================="
